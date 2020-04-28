@@ -1,0 +1,33 @@
+------------------------------------------------------------------------
+MONSTER 1:  
+Name:		Godzilla
+Description:
+	  An enormous, destructive, prehistoric sea monster awakened and
+	 empowered by nuclear radiation.
+
+Length:		393 feet
+Height:		999 feet
+Location:	In The Ocean
+Dangerous?	yes
+Number of Hours to Care for Monster:		$ 0
+Cost Per Hour of Taking Care of Monster:	$ 1000
+Cost to Feed Monster:				$ 700
+Grooming & Supplies Cost:			$ 0
+
+
+------------------------------------------------------------------------
+MONSTER 2:  
+Name:		King Kong
+Description:
+	  Giant Gorilla located on skull island. 
+
+Length:		393 feet
+Height:		1150 feet
+Location:	Skull Island
+Dangerous?	no
+Number of Hours to Care for Monster:		$ 1
+Cost Per Hour of Taking Care of Monster:	$ 5
+Cost to Feed Monster:				$ 600
+Grooming & Supplies Cost:			$ 25
+
+
