@@ -21,20 +21,21 @@ struct Monsters
 
 int enterMonsters(int,Monsters*);
 int deleteMonster(int,Monsters*);
-bool moveArrayElements();
 void printMonsters(int,Monsters*);
+// bool moveArrayElements(string,int,Monsters*);
+float convertToFloat(string);
 void printStatistics();
 void saveMonstersToFile();
-float convertToFloat(string);
+
 
 int main()
 {   
     int population=0;
+    int choice=0;
+    int capacity=100;
     bool runAgain=true;
+    Monsters* monsterArray = new Monsters[capacity];
     do{
-        int capacity=100;
-        Monsters* monsterArray = new Monsters[capacity];
-        int choice=0;
         char leave;
         cout<<"What would you like to do?\n";
         cout<<"\t\t1.\tEnter some Monsters\n";
@@ -67,17 +68,12 @@ int main()
         {
             case 1:
                 population = enterMonsters(population, monsterArray);
-                // cout<<"Population :"<<population<<endl;
-                for(int i=0;i<population;i++)
-                    cout<<monsterArray[i].name<<endl;
                 break;
             case 2:
                 population = deleteMonster(population, monsterArray);
                 break;
             case 3:
                 printMonsters(population, monsterArray);
-                cout<<"Population :"<<population<<endl;
-
                 break;
             case 4:
                 break;
@@ -187,7 +183,6 @@ int enterMonsters(int citizens,  Monsters* creatureArray )
                         citizens++;
                     }
                     cout<<"\n\nAll monsters from "<<chooseFile<<" have been added to the program.\n";
-                    
                 }
                 else
                 {
@@ -263,39 +258,59 @@ int deleteMonster(int citizens, Monsters* creatureArray)
     cout<<"What monster do you wish to remove?"<<endl;
     cout<<"MONSTER NAME: ";
     cin>>monsterName;
-    
+    // moveArrayElements(monsterName,citizens,creatureArray);
     return citizens;
 }
 
-bool moveArrayElements(string monsterName, int citizens, Monsters* creatureArray)
+/* bool moveArrayElements(string monsterName, int citizens, Monsters* creatureArray)
 {
     int monsterLoc;
     for(int i=0;i<100; i++)
     {
-        if(strcmp(monsterName,creatureArray[i].name)==0)
-        {
-            //delete creature at index i and shift next index left
-            creatureArray[i]=creatureArray[i+1];
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        
+        monsterLoc=i;
     }
-}
+    if(strcmp(monsterName,creatureArray[monsterLoc].name)==0)
+    {
+        for(int i=monsterLoc;i<100;i++)
+        {//delete creature at index i and shift next index left
+        creatureArray[i]=creatureArray[i+1];
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+        
+} */
 
 void printMonsters(int citizens, Monsters* creatureArray)
 {
+    string horizontalLine(80,'-');
+    cout<<horizontalLine<<endl;
     for(int i=0;i<citizens;i++)
-    {
-        cout<<"Monster "<<i+1<<": "<<creatureArray[i].description<<endl;
+    {   
+        
+        cout<<"Monster "<<i+1<<": ";
+        cout<<"Name:\t\t\t"<<creatureArray[i].name<<endl;
+        cout<<"Description:\t\t"<<endl;
+        cout<<creatureArray[i].description<<endl;
+        cout<<"Length: \t\t"<<creatureArray[i].avgLength<<" feet"<<endl;
+        cout<<"Height: \t\t"<<creatureArray[i].avgHeight<<" feet"<<endl;
+        if(creatureArray[i].dangerous==1)
+            cout<<"Dangerous?\t\t"<<"yes"<<endl;
+        else
+            cout<<"Dangerous?\t\t"<<"no"<<endl;      
+        cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.hours<<endl;
+        cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.care<<endl;
+        cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.food<<endl;
+        cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.materials<<endl;
+
+        cout<<horizontalLine<<endl;
     }
-    cout<<creatureArray[0].name;
 }
 
-void printStatistics()
+void printStatistics(int citizens, Monsters* creatureArray)
 {
 
 }
