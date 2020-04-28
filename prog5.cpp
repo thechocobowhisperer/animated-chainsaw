@@ -24,7 +24,7 @@ int deleteMonster(int,Monsters*);
 void printMonsters(int,Monsters*);
 bool moveArrayElements(string,int,Monsters*);
 float convertToFloat(string);
-void printStatistics();
+void printStatistics(int,Monsters*);
 void saveMonstersToFile();
 
 
@@ -76,6 +76,7 @@ int main()
                 printMonsters(population, monsterArray);
                 break;
             case 4:
+                printStatistics(population,monsterArray);
                 break;
             default:
                 {
@@ -112,6 +113,7 @@ int enterMonsters(int citizens,  Monsters* creatureArray )
     string chooseFile;
     ifstream inFile;
     string line;
+    cout<<fixed<<setprecision(2);
     bool enterRepeat = false;
     char answer;
     if(citizens>=100)
@@ -295,13 +297,14 @@ bool moveArrayElements(string monsterName, int citizens, Monsters* creatureArray
 void printMonsters(int citizens, Monsters* creatureArray)
 {
     int menu;
+    string horizontalLine(80,'-');
     cout<<"What would you like to do?\n";
     cout<<"\t1. Print Monsters to the Screen.\n";
     cout<<"\t2. Print Monsters to a file.\n";
     cin>>menu;
-    switch(menu){
+    switch(menu)
+    {
         case 1:
-            string horizontalLine(80,'-');
             cout<<horizontalLine<<endl;
             for(int i=0;i<citizens;i++)
             {   
@@ -331,7 +334,6 @@ void printMonsters(int citizens, Monsters* creatureArray)
             cout<<"FILENAME: ";
             cin>>file;
             outFile.open(file.c_str());
-            string horizontalLine(80,'-');
             outFile<<horizontalLine<<endl;
             for(int i=0;i<citizens;i++)
             {   
@@ -354,16 +356,43 @@ void printMonsters(int citizens, Monsters* creatureArray)
             outFile.close();
             break;
     }
-    
 }
 
 void printStatistics(int citizens, Monsters* creatureArray)
 {
-
+    float totalCost;
+    cout<<"COST OF EACH MONSTER FOR ONE WEEK: \n";
+    cout<<"MONSTER"<<setw(30)<<"COST\n";
+    for(int i=0;i<citizens;i++)
+    {
+        
+        float price = creatureArray[i].cost.hours*creatureArray[i].cost.care+creatureArray[i].cost.food+creatureArray[i].cost.materials;
+        totalCost+=price;
+        cout<<left<<setw(15)<<creatureArray[i].name<<right<<setw(20)<<"$"<<right<<setw(12)<<price<<endl;
+    }
+    cout<<endl<<left<<setw(15)<<"TOTAL COST:"<<right<<setw(20)<<"$"<<right<<setw(12)<<totalCost<<endl;
 }
 
-void saveMonstersToFile()
+void saveMonstersToFile(int citizens, Monsters *creatureArray)
 {
-
+    string saveFile;
+    cout<<"What is the name of the file you wish to save your monsters to?(example.txt)\n";
+    cout<<"FILENAME:";
+    cin>>saveFile;
+    ofstream outFile;
+    outFile.open(saveFile.c_str());
+    for(int i=0;i<citizens;i++)
+    {
+        outFile<<creatureArray[i].name<<"#";
+        outFile<<creatureArray[i].description<<"#";
+        outFile<<creatureArray[i].avgLength<<"#";
+        outFile<<creatureArray[i].avgHeight<<"#";
+        outFile<<creatureArray[i].location<<"#";
+        outFile<<creatureArray[i].dangerous<<"#";
+        outFile<<creatureArray[i].cost.care<<"#";
+        outFile<<creatureArray[i].cost.hours<<"#";
+        outFile<<creatureArray[i].cost.food<<"#";
+        outFile<<creatureArray[i].cost.materials<<"#";  
+    }
 }
 
