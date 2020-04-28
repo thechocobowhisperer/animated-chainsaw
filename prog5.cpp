@@ -25,7 +25,7 @@ void printMonsters(int,Monsters*);
 bool moveArrayElements(string,int,Monsters*);
 float convertToFloat(string);
 void printStatistics(int,Monsters*);
-void saveMonstersToFile();
+void saveMonstersToFile(int,Monsters*);
 
 
 int main()
@@ -84,6 +84,12 @@ int main()
                     cin>>leave;
                     if(toupper(leave)=='Y')
                         {
+                            char save;
+                            cin.ignore();
+                            cout<<"Would you like to save your monsters? ";
+                            cin>>save;
+                            if(toupper(save)=='Y')
+                                saveMonstersToFile(population,monsterArray);
                             runAgain=false;
                             cout<<"Thanks for visiting! Sorry to see you go.";
                         }
@@ -92,7 +98,7 @@ int main()
                 }
         }
     }while(runAgain);
-    
+    delete []monsterArray;
 
     return 0;
 }
@@ -195,9 +201,9 @@ int enterMonsters(int citizens,  Monsters* creatureArray )
             case 2:
                 do
                 {
+                    cin.ignore();
                     char danger;
                     cout<<"NAME: ";
-                    cin.ignore();
                     getline(cin,creatureArray[citizens].name);
                     cout<<"DESCRIPTION: ";
                     getline(cin,creatureArray[citizens].description);
@@ -234,7 +240,6 @@ int enterMonsters(int citizens,  Monsters* creatureArray )
                     citizens++;
                     cout<<"Do you want to add another Monster?";
                     cin>>answer;
-                    cin.ignore();
                     if(toupper(answer)=='Y')
                         enterRepeat=true;
                     else
@@ -301,14 +306,31 @@ void printMonsters(int citizens, Monsters* creatureArray)
     cout<<"What would you like to do?\n";
     cout<<"\t1. Print Monsters to the Screen.\n";
     cout<<"\t2. Print Monsters to a file.\n";
-    cin>>menu;
+    // Validate user choice
+        while(!(cin>>menu))
+        {   
+            // Error invalid choice
+            cout<< "Error... Enter a valid choice: ";
+            cin.clear();
+            cin.ignore(123,'\n');
+        }
+        while (menu < 1 || menu > 5)
+        {
+            cout << "Please choose 1-5:";
+            while(!(cin>>menu))
+            {
+                // Error invalid choice
+                cout<< "Error... Enter a valid choice: ";
+                cin.clear();
+                cin.ignore(123,'\n');
+            }
+        }
     switch(menu)
     {
         case 1:
             cout<<horizontalLine<<endl;
             for(int i=0;i<citizens;i++)
             {   
-                
                 cout<<"Monster "<<i+1<<": "<<endl;
                 cout<<"Name:\t\t\t"<<creatureArray[i].name<<endl;
                 cout<<"Description:"<<endl;
@@ -319,10 +341,10 @@ void printMonsters(int citizens, Monsters* creatureArray)
                     cout<<"Dangerous?\t\t"<<"yes"<<endl;
                 else
                     cout<<"Dangerous?\t\t"<<"no"<<endl;      
-                cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.hours<<endl;
-                cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.care<<endl;
-                cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.food<<endl;
-                cout<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.materials<<endl;
+                cout<<"Number of Hours to Care for Monster: \t\t$"<<creatureArray[i].cost.hours<<endl;
+                cout<<"Cost Per Hour of Taking Care of Monster: \t$"<<creatureArray[i].cost.care<<endl;
+                cout<<"Cost to Feed Monster: \t\t\t\t$"<<creatureArray[i].cost.food<<endl;
+                cout<<"Grooming & Supplies Cost: \t\t\t$"<<creatureArray[i].cost.materials<<endl;
 
                 cout<<horizontalLine<<endl;
             }
@@ -337,20 +359,19 @@ void printMonsters(int citizens, Monsters* creatureArray)
             outFile<<horizontalLine<<endl;
             for(int i=0;i<citizens;i++)
             {   
-               outFile<<"Monster "<<i+1<<": "<<endl;
-               outFile<<"Name:\t\t\t"<<creatureArray[i].name<<endl;
-               outFile<<"Description:"<<endl;
-               outFile<<"\t\t\t"<<creatureArray[i].description<<endl;
-               outFile<<"Length: \t\t"<<creatureArray[i].avgLength<<" feet"<<endl;
-               outFile<<"Height: \t\t"<<creatureArray[i].avgHeight<<" feet"<<endl;
+                outFile<<"Name:\t\t\t"<<creatureArray[i].name<<endl;
+                outFile<<"Description:"<<endl;
+                outFile<<"\t\t\t"<<creatureArray[i].description<<endl;
+                outFile<<"Length: \t\t"<<creatureArray[i].avgLength<<" feet"<<endl;
+                outFile<<"Height: \t\t"<<creatureArray[i].avgHeight<<" feet"<<endl;
                 if(creatureArray[i].dangerous==1)
                     outFile<<"Dangerous?\t\t"<<"yes"<<endl;
                 else
                     outFile<<"Dangerous?\t\t"<<"no"<<endl;      
-                outFile<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.hours<<endl;
-                outFile<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.care<<endl;
-                outFile<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.food<<endl;
-                outFile<<"Number of Hours to Care for Monster: \t\t\t$"<<creatureArray[i].cost.materials<<endl;
+                outFile<<"Number of Hours to Care for Monster: \t\t$"<<creatureArray[i].cost.hours<<endl;
+                outFile<<"Cost Per Hour of Taking Care of Monster: \t$"<<creatureArray[i].cost.care<<endl;
+                outFile<<"Cost to Feed Monster: \t\t\t\t$"<<creatureArray[i].cost.food<<endl;
+                outFile<<"Grooming & Supplies Cost: \t\t\t$"<<creatureArray[i].cost.materials<<endl;
                 outFile<<horizontalLine<<endl;
             }
             outFile.close();
@@ -395,4 +416,3 @@ void saveMonstersToFile(int citizens, Monsters *creatureArray)
         outFile<<creatureArray[i].cost.materials<<"#";  
     }
 }
-
